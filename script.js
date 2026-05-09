@@ -402,4 +402,4 @@ window.addEventListener('mousedown', () => { if (gameState === 'PLAYING') { isPr
 window.addEventListener('mouseup', () => isPressing = false);
 
 requestAnimationFrame(gameLoop);
-    
+                                
