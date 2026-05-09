@@ -132,15 +132,12 @@ function setupGame(mode) {
     document.getElementById('main-menu').style.display = 'none';
     document.getElementById('lvl-tag').style.display = 'block';
     document.getElementById('lvl-tag').innerText = mode === 'LEVELS' ? `LVL ${currentLevel}` : "INFINI";
-    document.getElementById('score').style.display = mode === 'LEVELS' ? 'none' : 'block';
     document.getElementById('retry-action-btn').onclick = () => { toggleScreen('over-menu', false); setupGame(mode); };
 
     // Show/hide progress bar
     const progressWrap = document.getElementById('level-progress-wrap');
     if (mode === 'LEVELS') {
         progressWrap.style.display = 'flex';
-        document.getElementById('level-progress-bar').style.width = '0%';
-        document.getElementById('level-progress-pct').innerText = '0%';
     } else {
         progressWrap.style.display = 'none';
     }
@@ -214,7 +211,7 @@ function update() {
         if (o.y > canvas.height + 100) obstacles.splice(i, 1);
     }
 
-    document.getElementById('score').innerText = gameMode === 'INFINITE' ? Math.floor(score) : '';
+    document.getElementById('score').innerText = gameMode === 'INFINITE' ? Math.floor(score) : `LVL ${currentLevel}`;
     document.getElementById('coin-count').innerText = `💰 ${coins}`;
 }
 
@@ -341,8 +338,6 @@ function goToHome() {
     toggleScreen('over-menu', false);
     toggleScreen('main-menu', true);
     document.getElementById('level-progress-wrap').style.display = 'none';
-    document.getElementById('score').style.display = 'block';
-    document.getElementById('lvl-tag').style.display = 'none';
     gameState = 'MENU';
     switchMusic(false);
 }
@@ -360,31 +355,10 @@ function renderShop() {
     const list = document.getElementById('skin-list'); list.innerHTML = '';
     skins.forEach(s => {
         const div = document.createElement('div'); div.className = 'skin-item';
-        const isOwned = ownedSkins.includes(s.c);
-        const isActive = activeSkin === s.c;
-        div.style.borderColor = isActive ? s.c : '#333';
-        div.style.boxShadow = isActive ? `0 0 12px ${s.c}55` : 'none';
-
-        // Color preview circle
-        const preview = document.createElement('div');
-        preview.className = 'skin-preview';
-        preview.style.background = s.c;
-        preview.style.boxShadow = `0 0 10px ${s.c}99`;
-
-        const label = document.createElement('div');
-        label.className = 'skin-label';
-        label.innerText = s.n;
-
-        const action = document.createElement('div');
-        action.className = 'skin-action';
-        action.innerText = isOwned ? (isActive ? '✓ ÉQUIPÉ' : 'ÉQUIPER') : s.p + ' 💰';
-
-        div.appendChild(preview);
-        div.appendChild(label);
-        div.appendChild(action);
-
+        div.style.borderColor = activeSkin === s.c ? 'white' : '#333';
+        div.innerHTML = `${s.n}<br>${ownedSkins.includes(s.c) ? 'EQUIP' : s.p + '💰'}`;
         div.onclick = () => {
-            if (isOwned) activeSkin = s.c;
+            if (ownedSkins.includes(s.c)) activeSkin = s.c;
             else if (coins >= s.p) { coins -= s.p; ownedSkins.push(s.c); activeSkin = s.c; sfx.coin(); }
             save(); renderShop();
         };
@@ -428,3 +402,4 @@ window.addEventListener('mousedown', () => { if (gameState === 'PLAYING') { isPr
 window.addEventListener('mouseup', () => isPressing = false);
 
 requestAnimationFrame(gameLoop);
+    
