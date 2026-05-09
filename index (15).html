@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Neon Dash Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="game-ui">
+
+        <!-- BARRE DE PROGRESSION : coin haut gauche, absolue -->
+        <div id="level-progress-wrap" style="display:none;">
+            <div id="level-progress-track">
+                <div id="level-progress-bar"></div>
+            </div>
+            <span id="level-progress-pct">0%</span>
+        </div>
+
+        <!-- HUD -->
+        <div class="hud">
+            <div id="hud-left">
+                <div id="score" style="display:none;">0</div>
+                <div id="lvl-tag" style="display:none;">LVL 1</div>
+            </div>
+            <div id="coin-count">💰 0</div>
+        </div>
+
+        <!-- Menu Principal -->
+        <div id="main-menu" class="screen">
+            <div id="settings-trigger" onclick="toggleScreen('settings-menu', true)">⚙️</div>
+            <h1 class="title">NEON<span>DASH</span></h1>
+            <div class="mode-select">
+                <button onclick="setupGame('INFINITE')" class="main-btn">MODE INFINI</button>
+                <button onclick="toggleScreen('level-select-menu', true)" class="main-btn">LES NIVEAUX</button>
+            </div>
+            <div class="extra-btns">
+                <button onclick="renderShop(); toggleScreen('shop-menu', true)" class="sec-btn">SKINS</button>
+                <button onclick="showRecords()" class="sec-btn">RECORDS</button>
+            </div>
+        </div>
+
+        <!-- Sélection Niveaux -->
+        <div id="level-select-menu" class="screen" style="display:none">
+            <h2>NIVEAUX</h2>
+            <div id="level-grid"></div>
+            <button onclick="toggleScreen('level-select-menu', false)" class="sec-btn">RETOUR</button>
+        </div>
+
+        <!-- Records -->
+        <div id="records-menu" class="screen" style="display:none">
+            <h2>RECORDS</h2>
+            <div class="stats-box">
+                <p>MEILLEUR SCORE : <span id="high-score">0</span></p>
+                <p>TOTAL PIÈCES : <span id="total-coins-rec">0</span></p>
+                <p>NIVEAU MAX : <span id="max-level">1</span></p>
+            </div>
+            <button onclick="toggleScreen('records-menu', false)" class="main-btn">RETOUR</button>
+        </div>
+
+        <!-- Paramètres -->
+        <div id="settings-menu" class="screen" style="display:none">
+            <h2>PARAMÈTRES</h2>
+            <div class="setting-item">
+                <label>VOLUME MENU</label>
+                <input type="range" id="vol-menu-slider" min="0" max="100" value="30">
+            </div>
+            <div class="setting-item">
+                <label>VOLUME JEU & SFX</label>
+                <input type="range" id="vol-game-slider" min="0" max="100" value="30">
+            </div>
+            <div class="setting-item">
+                <label>DÉPART</label>
+                <select id="start-side">
+                    <option value="left">GAUCHE</option>
+                    <option value="right">DROITE</option>
+                </select>
+            </div>
+            <button onclick="toggleScreen('settings-menu', false)" class="main-btn">OK</button>
+        </div>
+
+        <!-- Boutique -->
+        <div id="shop-menu" class="screen" style="display:none">
+            <h2>BOUTIQUE</h2>
+            <div id="skin-list"></div>
+            <button onclick="toggleScreen('shop-menu', false)" class="sec-btn">RETOUR</button>
+        </div>
+
+        <!-- Game Over -->
+        <div id="over-menu" class="screen" style="display:none">
+            <h2 id="over-msg">DÉTRUIT</h2>
+            <p id="final-score-box">SCORE: <span id="final-score">0</span></p>
+            <button id="retry-action-btn" class="main-btn">REJOUER</button>
+            <button onclick="goToHome()" class="sec-btn">MENU</button>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
